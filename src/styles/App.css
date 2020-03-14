@@ -1,0 +1,22 @@
+.App {
+  text-align: center;
+}
+.Workspace {
+  width:100vw;
+  height: 100vh;
+  padding-top: 70px;
+  display: flex;
+  justify-content: center;
+  background-color: khaki;
+  z-index: -1;
+}
+.Form {
+  margin-top: 70px;
+  width: 400px;
+  height: 400px;
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 10px;
+  border-style: solid;
+  border-color: #134578;
+}
+

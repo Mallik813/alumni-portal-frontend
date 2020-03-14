@@ -1,0 +1,12 @@
+.Navbar {
+    height: 70px;
+    width: 100vw;
+    position: fixed;
+    background-color: #134578;
+    color: #fff;
+    line-height: 70px;
+    font-size: 20pt;
+    overflow-x: hidden;
+    font-weight: 300;
+    z-index: 99;
+  }
