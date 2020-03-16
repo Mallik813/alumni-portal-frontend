@@ -1,25 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import Navbar from './containers/Navbar/Navbar';
+import Login from './containers/Login/Login';
+import Home from './containers/Home/Home';
+import {AuthContext} from './components/Hooks/Auth';
+import { Switch, Route } from 'react-router-dom';
+import ProtectedRoute  from "./components/ProtectedRoute/ProtectedRoute";
+
 
 function App() {
+  
+  const [authToken,setAuthToken]=useState(false);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthContext.Provider value={{authToken,setAuthToken}}>
+        <Navbar/>
+        <Switch>
+          <Route exact path="/">
+            <Login />
+          </Route>
+          <ProtectedRoute exact path="/home">
+            <Home />  
+          </ProtectedRoute>
+        </Switch>
+    </AuthContext.Provider>
   );
 }
 
