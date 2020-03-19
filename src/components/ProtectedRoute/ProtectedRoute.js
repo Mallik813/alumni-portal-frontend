@@ -19,3 +19,4 @@ const ProtectedRoute =({children,...rest})=>{
   };
 
   export default ProtectedRoute;
+  
