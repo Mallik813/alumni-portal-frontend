@@ -74,6 +74,9 @@ textarea::placeholder{
 textarea{
     resize: none;
 }
+textarea:focus {
+    outline: 0;
+}
 
 
 .uploadPosts_buttons{

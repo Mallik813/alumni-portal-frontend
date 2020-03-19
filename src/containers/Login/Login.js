@@ -1,9 +1,9 @@
 import React from 'react';
 import {useForm} from '../../components/Hooks/handleInputs'
-import {history, useHistory} from "react-router-dom"
+import {useHistory, Link} from "react-router-dom"
 import styles from './Login.module.css'
 import { useAuth } from '../../components/Hooks/Auth';
-import { emailValidation } from '../../validation';
+import { emailValidation } from '../../ValidateData/ValidateData';
 
 const Login =()=>{
 
@@ -19,6 +19,15 @@ const Login =()=>{
         const {email,password}=inputs;
         if(emailValidation(email)){
             
+            // fetch('http://localhost:4000/api/signup',{
+            //     method:'POST',
+            //     headers:{'Content-Type' : "application/json"},
+            //     body:JSON.stringify({
+            //         email:email,
+            //         password:password
+            //     }),
+            // })
+            // .then(res=>res.json())
             setAuthToken(true);
             history.push('./home');
         }
@@ -26,7 +35,7 @@ const Login =()=>{
    
     return (
         <div className={styles.login}>
-           <div className={styles.box}>
+           <div className={styles.login_box}>
                 <form className={styles.form}>
 
                     <div className={styles.field} >
@@ -53,15 +62,14 @@ const Login =()=>{
                          />
                     </div>
 
-                    <button onClick={handleLogin} className={styles.button}>
-                        Login
-                    </button>
+                    <input onClick={handleLogin} className={styles.button} type="submit" value="sumbit"/>
+                        {/* Login
+                    </input> */}
                     
                     <hr className={styles.line}/> 
-
-                    <button className={styles.button}>
-                        Register
-                    </button>
+                    {/* <Link to='/register'> */}
+                        <Link to='/register' className={styles.button}>Register</Link>
+                    {/* </Link> */}
                 </form>
            </div>
         </div>

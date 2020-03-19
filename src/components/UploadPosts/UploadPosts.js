@@ -19,7 +19,7 @@ const UploadPosts =()=>{
                 <button className={ activeTab==="tab3" ? `${styles.active_tab} ${styles.tab}` :`${styles.tab}`} onClick={()=>handleTabChange("tab3")} >Activities</button>
             </div>
             <div className={styles.content}>
-                {/* <textarea placeholder="Write a Post" ></textarea> */}
+                <textarea placeholder="Write a Post" ></textarea>
             </div>
             <div className={styles.uploadPosts_buttons}>
                 <button>Upload a photo/video</button>
