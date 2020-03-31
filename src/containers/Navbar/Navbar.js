@@ -1,21 +1,33 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import styles from  './Navbar.module.css';
 import Logo from '../../images/logo.png'
 import { useAuth } from '../../components/Hooks/Auth';
-import SearchIcon from '../../images/search_icon.png'
-const Navbar =()=>{
+import SearchIcon from '../../images/search_icon.png';
+import { Link} from 'react-router-dom';
+import Button from "../../components/Hamburger/Button/Button";
+import Menu from '../../components/Hamburger/Menu/Menu';
+import { useOnClickOutside } from "../../components/Hooks/useOnClickOutside"
+
+const Navbar =({openNav, setOpenNav, logout})=>{
 
     const {authToken} = useAuth();
+    const node=useRef();
+    useOnClickOutside(node,()=>setOpenNav(0));
+
     return (
         <div>
             {!authToken?
                 <div className={styles.unauthorize_navbar}>
-                    <img src={Logo}  alt='Logo' className={styles.logo}/>
+                    <Link to="/" className={styles.logo} >
+                        <img src={Logo}  alt='Logo' />
+                    </Link>
                     <div className={styles.unauthorize_text}>Atal Bihari Vajpayee Indian Institute of Information Technology and Management Gwalior Alumni Association Portal</div>
                 </div>
                 :<div className={styles.authorize_navbar}>
                     <div className={styles.left}>
-                        <img src={Logo}  alt='Logo' className={styles.logo}/>
+                        <Link to="/" className={styles.logo} >
+                            <img src={Logo}  alt='Logo' />
+                        </Link>
                         <div className={styles.authorize_text}>
                             <div className={styles.inst_name}>ABV-IIITMG</div>
                             <div className={styles.portal_name}>Alumni Association Portal</div>
@@ -27,9 +39,8 @@ const Navbar =()=>{
                             <input type="text" placeholder="Search.." name="search" className={styles.search_text} />
                         </div>
                         <div className={styles.hamburger}>
-                            <div></div>
-                            <div></div>
-                            <div></div>
+                            <Button openNav={openNav} setOpenNav={setOpenNav} />
+                            <Menu openNav={openNav} logout={logout} />
                         </div>
                     </div>
                 </div>}

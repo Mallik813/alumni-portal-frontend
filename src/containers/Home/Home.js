@@ -4,17 +4,20 @@ import Profile from '../../images/profile.jpg'
 import Setting from '../../images/settings.png'
 import UploadPosts from '../../components/UploadPosts/UploadPosts';
 import ShowPosts from '../../components/ShowPosts/ShowPosts';
-
+import {useAuth} from '../../components/Hooks/Auth'
 
 const Home =()=>{
+
+    const {currentUser} = useAuth();
+
     return (
         <div className={styles.home}>
-
+            
             <div className={styles.left}>
                 <div className={styles.left_upper}>
                     <div className={styles.info}>
                         <img src={Profile}  alt='Logo' className={styles.photo}/>
-                        <div className={styles.name}> Name </div>
+                        <div className={styles.name}> {currentUser.name} </div>
                     </div>
                     <div className={styles.editProfile}>
                         <div>Edit Profile</div>

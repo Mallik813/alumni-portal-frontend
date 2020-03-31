@@ -65,19 +65,20 @@ input:focus {
 
 .button{
     width:35%;
-    height: 2.5rem;
-    margin-top: 0.4rem;
-    margin-bottom: 0.4rem;
+    height: 2.5em;
+    margin-top: 0.4em;
+    margin-bottom: 0.4em;
     background:#124479;
     display: flex;
     justify-content: center;
     align-items: center;
     color:white;
-    border-radius: 2rem; 
+    border-radius: 18px; 
     font-family: Georgia, 'Times New Roman', Times, serif;
-    font-size: 1.5rem;
+    font-size: 1.5em;
     border:0px;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .line{
@@ -86,6 +87,4 @@ input:focus {
     background-color: #124479;
     border: 0;
     border-radius:20%;
-
-    
 }
