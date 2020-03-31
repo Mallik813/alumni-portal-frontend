@@ -10,7 +10,7 @@
 
 /* left bar  */
 .left{
-    width:18%;
+    width:18vw;
     display: flex;
     flex-direction: column;
     justify-content: begin;

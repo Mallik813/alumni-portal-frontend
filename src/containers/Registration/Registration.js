@@ -1,8 +1,9 @@
 import React from "react";
 import { useForm } from "../../components/Hooks/handleInputs";
+import {emailValidation, phonenoValidation, isNull} from '../../utils/validateData';
 import styles from './Registration.module.css'
-import { emailValidation, phonenoValidation } from "../../ValidateData/ValidateData";
 import { useHistory } from 'react-router-dom'
+import { triggerAlert } from "../../utils/getAlert/getAlert"
 
 const Registration =()=>{
     let date=new Date();
@@ -10,20 +11,33 @@ const Registration =()=>{
     let max_year=current_year+4;
     const history=useHistory();
   
-    const [inputs,changeInputs]=useForm({name:'Priyansh',email:'',password:'',phoneno:'',batch_name:'IPG',sub_batch:'MTech',dob:'1998-08-28',graduation_year:max_year});
+    const [inputs,changeInputs]=useForm({name:'Priyansh',email:'kf@kf.com',password:'123456',phoneno:'9933332222',batchName:'IPG',subBatch:'MTech',dob:'1998-08-28',graduationYear:max_year, userType : 'student'});
     
+
     const handleRegister =(event)=>{
         event.preventDefault();
-        console.log('sdf');
-        console.log(inputs);
-        if(emailValidation(inputs.email) && phonenoValidation(inputs.phoneno)){
-            console.log('sdhhf');
-            history.replace('/verifyemail');
+        if( isNull(inputs) && emailValidation(inputs.email) && phonenoValidation(inputs.phoneno)  ){
+            fetch('http://localhost:4000/api/signup',{
+                method:'POST',
+                headers:{'Content-Type':'application/json'},
+                body:JSON.stringify(inputs),
+            })
+            .then(response=>response.json())
+            .then(res=>{
+                if(res.icon==="success"){
+                    triggerAlert(res);
+                    history.replace('/');
+                }
+                else{
+                    triggerAlert(res);
+                }
+            })
+            //.catch(console.log('error'));
         }
     }
-    const handleGraduationYear=(e)=>{
+    const changeBatchName=(e)=>{
         changeInputs(e);
-        switch(inputs.batch_name){
+        switch(inputs.batchName){
             case 'IPG': 
                         max_year=current_year+4;  
             break;
@@ -35,9 +49,17 @@ const Registration =()=>{
             case 'MBA': max_year=current_year+1;
             break;
             default: max_year=current_year+5;
+        }     
+    
+    }
+
+    const changeGraduateYear=event=>{
+        changeInputs(event);
+        if(current_year> inputs.graduationYear){
+            console.log('dsf11111');
+            changeInputs({'target.name':'userType','target.value':'alumni'});
         }
         
-    
     }
     return(
         <div className={styles.registration}>
@@ -55,35 +77,35 @@ const Registration =()=>{
                     </div>
                     <div className={styles.field}>
                         <label htmlFor="phoneno">Phone Number</label>
-                        <input required placeholder="Phone Number" type="text" name="phoneno" value={inputs.phone} onChange={changeInputs}/>
+                        <input required placeholder="Phone Number" type="text" name="phoneno" value={inputs.phoneno} onChange={changeInputs}/>
                     </div>
                     <div className={styles.field}>
                         <label htmlFor="password">Password</label>
                         <input required placeholder="Password" type="password" name="password" value={inputs.password} onChange={changeInputs}/>
                     </div>
                     <div className={styles.field}>
-                        <label htmlFor="batch_name">Batch</label>
+                        <label htmlFor="batchName">Batch</label>
                         <div className={styles.batch}>
-                            <select name="batch_name" onChange={handleGraduationYear}>
+                            <select name="batchName" onChange={changeBatchName}>
                                 <option value="IPG">IPG</option>
                                 <option value="BCS">BCS</option>
                                 <option value="MTech">M.Tech</option>
                                 <option value="MBA">MBA</option>
                                 <option value="PhD">PhD</option>
                             </select>
-                            {inputs.batch_name==="IPG"?
-                                <select name="sub_batch">
+                            {inputs.batchName==="IPG"?
+                                <select name="subBatch" onChange={changeInputs}>
                                     <option value="MTech">M.Tech</option>
                                     <option value="MBA">MBA</option>                                                                       
                                 </select>
-                                :inputs.batch_name==="MTech"?
-                                    <select name="sub_batch">
+                                :inputs.batchName==="MTech"?
+                                    <select name="subBatch" onChange={changeInputs}>
                                         <option value="DC">Digital Communication</option>
                                         <option value="CN">Computer Networks</option>
                                         <option value="VLSI">Very Large Scale Integration</option>
                                         <option value="ISS">Internet Security</option>                                                                           
                                     </select>
-                                    :<select disabled name="sub_batch">
+                                    :<select disabled name="subBatch" onChange={changeInputs}>
                                         <option value="NA">NA</option>
                                     </select>
                             }
@@ -91,8 +113,8 @@ const Registration =()=>{
                         </div>
                     </div>
                     <div className={styles.field}>
-                        <label htmlFor="graduation_year">Graduation Year</label>
-                        <input  required type="number" min="1999" max={max_year} name="graduation_year" value={inputs.graduation_year} onChange={changeInputs}/>
+                        <label htmlFor="graduationYear">Graduation Year</label>
+                        <input  required type="number" min="1999" max={max_year} name="graduationYear" value={inputs.graduationYear} onChange={changeGraduateYear}/>
                     </div>
                     <div className={styles.field}>
                         <label htmlFor="dob">Date of Birth </label>
