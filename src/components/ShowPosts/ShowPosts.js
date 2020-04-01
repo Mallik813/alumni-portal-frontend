@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./ShowPosts.module.css";
 import Posts from "../../images/institute.jpeg"
 function ShowPosts(){
 
+    useEffect(()=>{
+        
+    })
     const [activeTab,handleTabChange]=useState('tab1');
     return (
         <div className={styles.showPosts}>
