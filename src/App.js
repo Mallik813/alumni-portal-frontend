@@ -4,7 +4,7 @@ import Navbar from './containers/Navbar/Navbar';
 import Login from './containers/Login/Login';
 import Home from './containers/Home/Home';
 import {AuthContext} from './components/Hooks/Auth';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import ProtectedRoute  from "./components/ProtectedRoute/ProtectedRoute";
 import Registration from "./containers/Registration/Registration";
 import styles from './App.module.css';
@@ -49,8 +49,7 @@ function App() {
               }
             </Route>
             <Route exact path="/register">
-              {currentUser?(<Home/> 
-                           ) 
+              {currentUser? <Redirect to="/" />
                           :<Registration />
               }
             </Route>
