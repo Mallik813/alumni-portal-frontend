@@ -7,7 +7,7 @@ const Menu = ({openNav, logout}) =>{
 
     return (
         <div className={openNav?`${styles.menu} ${styles.openMenu}`: styles.menu}>
-            <a href='#' onClick={logout}> LogOut</a>
+            <button onClick={logout}> LogOut</button>
         </div>
     )
 }

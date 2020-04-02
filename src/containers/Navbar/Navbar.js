@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import styles from  './Navbar.module.css';
 import Logo from '../../images/logo.png'
 import { useAuth } from '../../components/Hooks/Auth';
@@ -8,9 +8,10 @@ import Button from "../../components/Hamburger/Button/Button";
 import Menu from '../../components/Hamburger/Menu/Menu';
 import { useOnClickOutside } from "../../components/Hooks/useOnClickOutside"
 
-const Navbar =({openNav, setOpenNav, logout})=>{
+const Navbar =({logout })=>{
 
-    const {authToken} = useAuth();
+  const [openNav,setOpenNav]=useState(0);
+  const {authToken} = useAuth();
     const node=useRef();
     useOnClickOutside(node,()=>setOpenNav(0));
 

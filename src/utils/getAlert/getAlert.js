@@ -21,4 +21,6 @@ export const triggerAlert=(data)=>{
     const toast = getAlert();
     toast.fire(data);
 }
+
+
 export default getAlert;

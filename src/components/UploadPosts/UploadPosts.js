@@ -1,12 +1,53 @@
 import React,{useState, useEffect} from "react";
+import Swal from 'sweetalert2/src/sweetalert2';
 import styles from './UploadPosts.module.css';
 import { useAuth } from "../Hooks/Auth";
+import { triggerAlert } from "../../utils/getAlert/getAlert";
 
 const UploadPosts =()=>{
 
+
+    /* activeTab
+        1 - share opportunity
+        2 - request for referal
+        3 - activities
+    */
+
     const { authToken } = useAuth();
     const [activeTab,setActiveTab]=useState("1");
-    const [post,setPost]=useState({ text:'', type:'1'});
+    const [post,setPost]=useState({ text:'', type:'1',imageUrl:''});
+
+    const onUploadFile=(async () => {
+
+        const { value: file } = await Swal.fire({
+          title: 'Select image',
+          input: 'file',
+          background: '#124479',
+          inputAttributes: {
+            'accept': 'image/*',
+            'aria-label': 'Upload your profile picture'
+          }
+        })
+        
+        if (file) {
+            const formData = new FormData();
+            formData.append('file',file);
+            fetch('http://localhost:4000/api/uploadimage',{
+                method:'POST',
+                headers:{
+                        //  'Content-Type' : 'multipart/form-data; boundary=<calculated when request is sent>',
+                         'Authorization' : `Bearer ${authToken}`,
+                        },
+                body:formData,
+            })
+            .then(response=>response.json())
+            .then(res=>{
+                setPost( {...post,imageUrl: res.data} );
+            })
+        }
+        
+        })
+    
 
     const handleTabChange=(id)=>{
         setActiveTab(id);
@@ -21,19 +62,24 @@ const UploadPosts =()=>{
         setPost({...post,type:activeTab});
     },[activeTab]);
 
+    // const onUpload=()=>{
+    // }
+
     const onPost=(event)=>{
         event.preventDefault();
         
-        console.log(post,activeTab);
-        
+        if(post.text.length===0){
+            triggerAlert({icon:'error', title:`Post can't be empty!`})  
+            return;
+        }      
         fetch('http://localhost:4000/api/uploadPost',{
             method:'POST',
             headers:{'Content-Type' : "application/json", "Authorization" : `Bearer ${authToken}`},
             body:JSON.stringify(post),
         })
         .then(response=>response.json())
-        .then(resp=>{
-            console.log(resp);
+        .then(res=>{
+            triggerAlert(res);
         })
     }
     return(
@@ -48,7 +94,7 @@ const UploadPosts =()=>{
                 <textarea onChange={handleTextArea} name="text"  placeholder="Write a Post" ></textarea>
             </div>
             <div className={styles.uploadPosts_buttons}>
-                <button>Upload a photo/video</button>
+                <button onClick={onUploadFile}>Upload a photo/video</button>
                 <button onClick={onPost}>Post</button>
             </div>
 
