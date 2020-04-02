@@ -13,7 +13,6 @@ function App() {
   
   const [authToken,setAuthToken]=useState(false);
   const [currentUser,setCurrentUser] = useState();
-  const [openNav,setOpenNav]=useState(0);
   
   const logout=()=>{
     setAuthToken(null);
@@ -40,7 +39,7 @@ function App() {
   },[authToken]);
   return (
     <AuthContext.Provider value={{authToken,setAuthToken, currentUser}}>
-        <Navbar openNav={openNav} setOpenNav={setOpenNav} logout={logout} />
+        <Navbar logout={logout} />
         <div className={styles.content}>
           <Switch>
             <Route exact path="/">

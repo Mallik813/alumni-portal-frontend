@@ -18,19 +18,21 @@
     opacity: 0;  
 }
 
-.menu a{
+.menu button{
     margin:1%;
     font-size: 1em;
     text-transform: uppercase;
     font-weight: bold;
     text-decoration: none;
     color: #f0f0f0;
+    background: transparent;
+    border: 0px;
     transition: color 0.3s linear;
     cursor: pointer;
 }
 
-a:hover{
-    color:#343078;
+button:hover{
+    color:#978dd0;
 }
 
 .openMenu{
