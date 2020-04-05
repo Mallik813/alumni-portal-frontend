@@ -5,9 +5,9 @@ import { Route, Redirect, useLocation } from 'react-router-dom';
 const ProtectedRoute =({children,...rest})=>{
     const {authToken} = useAuth();
     const location = useLocation();
-
+  console.log(authToken);
     return (
-     
+    
       <Route {...rest}>
         {authToken ? (
           children

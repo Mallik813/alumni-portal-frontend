@@ -34,15 +34,13 @@ const UploadPosts =()=>{
             formData.append('file',file);
             fetch('http://localhost:4000/api/uploadimage',{
                 method:'POST',
-                headers:{
-                        //  'Content-Type' : 'multipart/form-data; boundary=<calculated when request is sent>',
-                         'Authorization' : `Bearer ${authToken}`,
-                        },
+                headers:{'Authorization' : `Bearer ${authToken}`},
                 body:formData,
             })
             .then(response=>response.json())
             .then(res=>{
                 setPost( {...post,imageUrl: res.data} );
+                triggerAlert( {icon:'success', title:'Image is Uploaded'} )
             })
         }
         
@@ -79,6 +77,7 @@ const UploadPosts =()=>{
         })
         .then(response=>response.json())
         .then(res=>{
+            setPost( {...post,text:'',imageUrl:''} );
             triggerAlert(res);
         })
     }

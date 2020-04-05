@@ -9,8 +9,6 @@ import { triggerAlert } from '../../utils/getAlert/getAlert';
 const Login =()=>{
 
     const [inputs,changeInputs]=useForm({email:'',password:''});
-    
-
     const {setAuthToken}=useAuth();
     const handleLogin =(event)=>{
         
