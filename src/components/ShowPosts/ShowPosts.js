@@ -44,7 +44,16 @@ function ShowPosts( {findAll, userId} ){
             </div>
              <div className={styles.content}>
                  {posts}
-                
+                 <div className={styles.post}>   
+                    <div>Name</div>
+                    <div>Text.......</div>
+                    <img src={Posts} alt="Posts" />
+                </div>
+                <div className={styles.post}>   
+                    <div>Name</div>
+                    <div>Text.......</div>
+                    <img src={Posts} alt="Posts" />
+                </div>
             </div>  
         </div>
     );
