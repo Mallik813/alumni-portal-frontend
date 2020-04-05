@@ -1,22 +1,38 @@
 import React from "react";
 import { useForm } from "../../components/Hooks/handleInputs";
-import {emailValidation, phonenoValidation, isNull} from '../../utils/validateData';
-import styles from './Registration.module.css'
-import { useHistory } from 'react-router-dom'
-import { triggerAlert } from "../../utils/getAlert/getAlert"
+import {emailValidation, phonenoValidation, isNull, gradutationYearValidation} from '../../utils/validateData';
+import styles from './Registration.module.css';
+import { useHistory } from 'react-router-dom';
+import { triggerAlert } from "../../utils/getAlert/getAlert";
 
 const Registration =()=>{
     let date=new Date();
     let current_year=date.getFullYear();
-    let max_year=current_year+4;
+    let julyFlag=(Number)(date.getMonth()<=7);
     const history=useHistory();
+    let duration=5;
   
-    const [inputs,changeInputs]=useForm({name:'Priyansh',email:'kf@kf.com',password:'123456',phoneno:'9933332222',batchName:'IPG',subBatch:'MTech',dob:'1998-08-28',graduationYear:max_year, userType : 'student'});
+    const [inputs,changeInputs]=useForm({name:'Priyansh',email:'kf@kf.com',password:'123456',phoneno:'9933332222',batchName:'IPG',subBatch:'MTech',dob:'1998-08-28',admissionYear:'2019', graduationYear:'2024', userType : 'student'});
     
-
     const handleRegister =(event)=>{
         event.preventDefault();
-        if( isNull(inputs) && emailValidation(inputs.email) && phonenoValidation(inputs.phoneno)  ){
+        switch(inputs.batchName){
+            case 'IPG': 
+                        duration=5;  
+            break;
+            case 'BCS': 
+                        duration=4;
+            break;
+            case "MTech": duration=2;
+            break;
+            case 'MBA': duration=2;
+            break;
+            default: duration=5;
+        }
+        if(current_year> inputs.graduationYear){
+            changeInputs({'target':{'name':'userType','value':'alumni'}});
+        }
+        if( isNull(inputs) && emailValidation(inputs.email) && phonenoValidation(inputs.phoneno) && gradutationYearValidation(+inputs.admissionYear+ +duration,+inputs.graduationYear) ){
             fetch('http://localhost:4000/api/signup',{
                 method:'POST',
                 headers:{'Content-Type':'application/json'},
@@ -32,35 +48,9 @@ const Registration =()=>{
                     triggerAlert(res);
                 }
             })
-            //.catch(console.log('error'));
         }
-    }
-    const changeBatchName=(e)=>{
-        changeInputs(e);
-        switch(inputs.batchName){
-            case 'IPG': 
-                        max_year=current_year+4;  
-            break;
-            case 'BCS': 
-                        max_year=current_year+3;
-            break;
-            case 'MTech': max_year=current_year+1;
-            break;
-            case 'MBA': max_year=current_year+1;
-            break;
-            default: max_year=current_year+5;
-        }     
-    
     }
 
-    const changeGraduateYear=event=>{
-        changeInputs(event);
-        if(current_year> inputs.graduationYear){
-            console.log('dsf11111');
-            changeInputs({'target.name':'userType','target.value':'alumni'});
-        }
-        
-    }
     return(
         <div className={styles.registration}>
             <div className={styles.registration_box}>
@@ -86,7 +76,7 @@ const Registration =()=>{
                     <div className={styles.field}>
                         <label htmlFor="batchName">Batch</label>
                         <div className={styles.batch}>
-                            <select name="batchName" onChange={changeBatchName}>
+                            <select name="batchName" onChange={changeInputs}>
                                 <option value="IPG">IPG</option>
                                 <option value="BCS">BCS</option>
                                 <option value="MTech">M.Tech</option>
@@ -113,8 +103,12 @@ const Registration =()=>{
                         </div>
                     </div>
                     <div className={styles.field}>
+                        <label htmlFor="admissionYear">Admission Year</label>
+                        <input  required type="number" min="1999" max={current_year-julyFlag} name="admissionYear" value={inputs.admissionYear} onChange={changeInputs}/>
+                    </div>
+                    <div className={styles.field}>
                         <label htmlFor="graduationYear">Graduation Year</label>
-                        <input  required type="number" min="1999" max={max_year} name="graduationYear" value={inputs.graduationYear} onChange={changeGraduateYear}/>
+                        <input  required type="number" min="1999" max={current_year+5} name="graduationYear" value={inputs.graduationYear} onChange={changeInputs}/>
                     </div>
                     <div className={styles.field}>
                         <label htmlFor="dob">Date of Birth </label>
